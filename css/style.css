@@ -390,7 +390,7 @@ body {
   left: 28px;
   width: 185px;
   height: 185px;
-  background: #ffc410;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25' fill='%23ffc410'/%3E%3C/svg%3E") center/contain no-repeat;
 }
 
 #thumbnail.template-hk .th-shipping-icon {
@@ -523,7 +523,8 @@ body {
 
 /* ── 히디프 대만(Hidif TW) 템플릿 ── */
 #thumbnail.template-hidif-tw {
-  background: linear-gradient(to bottom, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.7) 50%, rgba(103,152,130,0.7) 100%), #ffffff;
+  background-color: #ffffff;
+  background-image: linear-gradient(to bottom, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.7) 50%, rgba(103,152,130,0.7) 100%);
 }
 
 /* 노이즈 오버레이 */
@@ -604,7 +605,7 @@ body {
 
 /* 히디프 사은품 박스 */
 #thumbnail.template-hidif-tw .th-gift-wrap {
-  outline-color: #000000;
+  border-color: #000000;
   background: transparent;
 }
 
@@ -616,16 +617,14 @@ body {
   background: #000000;
 }
 
-/* 免運 배지 — 좌상단 노란 육각형 (상단 꼭짓점, 정육각형 비율) */
+/* 免運 배지 — 좌상단 노란 육각형 (SVG background, html2canvas 호환) */
 .th-badge-shipping {
   position: absolute;
   top: 44px;
   left: 44px;
   width: 156px;
   height: 156px;
-  background: #ffda2a;
-  /* 정육각형: 상단/하단에 꼭짓점, 좌우 여백 6.7%로 찌그러짐 방지 */
-  clip-path: polygon(50% 0%, 93.3% 25%, 93.3% 75%, 50% 100%, 6.7% 75%, 6.7% 25%);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25' fill='%23ffda2a'/%3E%3C/svg%3E") center/contain no-repeat;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -720,7 +719,7 @@ body {
 .th-products {
   position: absolute;
   left: -30px;
-  top: 80px;
+  top: 150px;
   bottom: 80px;
   right: 0;
   display: flex;
@@ -728,6 +727,7 @@ body {
   justify-content: center;
   gap: 20px;
   padding: 0;
+  z-index: 2;
 }
 
 .th-product-img {
@@ -780,9 +780,7 @@ body {
   bottom: 40px;
   width: 250px;
   height: 380px;
-  border: none;
-  outline: 2px dashed #76a2db;
-  outline-offset: -2px;
+  border: 2px dashed #76a2db;
   border-radius: 10px;
   overflow: hidden;
   z-index: 10;
@@ -803,10 +801,12 @@ body {
 }
 
 .th-gift-imgs img {
-  flex: 1;
-  min-width: 0;
+  flex-shrink: 0;
   max-height: 100%;
-  object-fit: contain;
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  display: block;
 }
 
 /* 사은품 텍스트 영역 — 박스 하단 고정 70px */
