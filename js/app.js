@@ -360,11 +360,33 @@ async function exportImage(format) {
     const prevTransform = scaler.style.transform;
     scaler.style.transform = 'scale(1)';
 
-    // 히디프: 배경색 강제 지정 + 노이즈 레이어 숨김 (html2canvas mix-blend-mode 미지원 우회)
     const isHidif = thumbnail.classList.contains('template-hidif-tw');
+    const isHK    = thumbnail.classList.contains('template-hk');
+    const bgColor = (state.country === 'tw' || state.country === 'sg') ? '#f5f5f5' : '#ffffff';
+
+    // 히디프: 배경색 강제 지정 + 노이즈 레이어 숨김
     if (isHidif) {
       thumbnail.style.backgroundColor = '#ffffff';
       thumbnail.classList.add('th-exporting');
+    }
+
+    // HK: CSS 그라데이션 테두리 제거 (캡처 후 Canvas에서 직접 그림)
+    if (isHK) {
+      thumbnail.style.border     = 'none';
+      thumbnail.style.background = '#ffffff';
+    }
+
+    // 무료배송 뱃지 정보 저장 (캡처 후 post-processing용)
+    const badge = document.getElementById('thShipping');
+    let badgeInfo = null;
+    if (badge && badge.style.display !== 'none') {
+      badgeInfo = {
+        x: badge.offsetLeft,
+        y: badge.offsetTop,
+        w: badge.offsetWidth,
+        h: badge.offsetHeight,
+        color: isHK ? '#ffc410' : '#ffda2a',
+      };
     }
 
     await new Promise(r => requestAnimationFrame(r));
@@ -375,15 +397,61 @@ async function exportImage(format) {
       scale:           1,
       useCORS:         true,
       allowTaint:      false,
-      backgroundColor: '#ffffff',
+      backgroundColor: bgColor,
       logging:         false,
     });
 
     scaler.style.transform = prevTransform;
+
+    // DOM 복원
     if (isHidif) {
       thumbnail.style.backgroundColor = '';
       thumbnail.classList.remove('th-exporting');
     }
+    if (isHK) {
+      thumbnail.style.border     = '';
+      thumbnail.style.background = '';
+    }
+
+    // ── Post-processing ──────────────────────────────
+    const ctx = canvas.getContext('2d');
+
+    // 1) 무료배송 뱃지 → 육각형 clip
+    if (badgeInfo) {
+      const { x, y, w, h, color } = badgeInfo;
+      const pts = [[0.5,0],[0.933,0.25],[0.933,0.75],[0.5,1],[0.067,0.75],[0.067,0.25]];
+
+      // 뱃지 내용(아이콘+텍스트 포함)을 임시 캔버스에 복사
+      const tmp = document.createElement('canvas');
+      tmp.width  = w;
+      tmp.height = h;
+      tmp.getContext('2d').drawImage(canvas, x, y, w, h, 0, 0, w, h);
+
+      // 메인 캔버스에서 뱃지 영역을 배경색으로 덮음 (사각형 제거)
+      ctx.fillStyle = bgColor;
+      ctx.fillRect(x, y, w, h);
+
+      // 육각형 영역만 clip 후 뱃지 내용 복원
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(x + pts[0][0]*w, y + pts[0][1]*h);
+      for (let i = 1; i < pts.length; i++) ctx.lineTo(x + pts[i][0]*w, y + pts[i][1]*h);
+      ctx.closePath();
+      ctx.clip();
+      ctx.drawImage(tmp, x, y);
+      ctx.restore();
+    }
+
+    // 2) HK 그라데이션 테두리 → Canvas에 직접 그림
+    if (isHK) {
+      const grad = ctx.createLinearGradient(0, 0, 1000, 1000);
+      grad.addColorStop(0, '#FF5001');
+      grad.addColorStop(1, '#C20116');
+      ctx.strokeStyle = grad;
+      ctx.lineWidth   = 11;
+      ctx.strokeRect(5.5, 5.5, 989, 989);
+    }
+    // ────────────────────────────────────────────────
 
     const countryLabel = { tw: '대만', hk: '홍콩', sg: '싱가포르' };
     const productLabel = state.products.length > 0 ? state.products[0].name : '썸네일';
@@ -399,8 +467,9 @@ async function exportImage(format) {
     alert('내보내기 실패: ' + err.message);
     console.error(err);
   } finally {
-    exportBtn.disabled    = false;
-    exportBtn.textContent = format === 'jpg' ? '↓ JPG' : '↓ PNG';
+    const btn = document.getElementById(format === 'jpg' ? 'exportJpg' : 'exportPng');
+    btn.disabled   = false;
+    btn.innerHTML  = `<img src="assets/download-icon.png" class="btn-dl-icon" alt=""> ${format.toUpperCase()}`;
   }
 }
 
