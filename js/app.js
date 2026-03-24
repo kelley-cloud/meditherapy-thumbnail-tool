@@ -1,9 +1,7 @@
 /**
- * 메디테라피 썸네일 생성기 — app.js
- *
- * 구글 시트 CSV URL (공개 설정 필요):
- * 시트 → 파일 → 공유 → 웹에 게시 → CSV 로 게시 후 URL 교체
+ * 메디테라피 썸네일 생성기 — app.js v5
  */
+console.log('✅ app.js v5 로드됨');
 
 const SHEET_CSV_URL =
   'https://docs.google.com/spreadsheets/d/e/2PACX-1vRYjkiTVCUBF41ITs5lkCtZVsLdjzZgNamDX6hR2qmj8uAof8HnCuJAWzFmd34Z3eJ5Lmnmwwszgy4j/pub?output=csv';
