@@ -1,7 +1,7 @@
 /**
  * 메디테라피 썸네일 생성기 — app.js v5
  */
-console.log('✅ app.js v5 로드됨');
+console.log('✅ app.js v6 로드됨');
 
 const SHEET_CSV_URL =
   'https://docs.google.com/spreadsheets/d/e/2PACX-1vRYjkiTVCUBF41ITs5lkCtZVsLdjzZgNamDX6hR2qmj8uAof8HnCuJAWzFmd34Z3eJ5Lmnmwwszgy4j/pub?output=csv';
@@ -389,7 +389,7 @@ async function exportImage(format) {
 
     await new Promise(r => requestAnimationFrame(r));
 
-    const canvas = await html2canvas(thumbnail, {
+    const rawCanvas = await html2canvas(thumbnail, {
       width:           1000,
       height:          1000,
       scale:           1,
@@ -411,36 +411,43 @@ async function exportImage(format) {
       thumbnail.style.background = '';
     }
 
-    // ── Post-processing ──────────────────────────────
-    const ctx = canvas.getContext('2d');
+    console.log('[export v5] rawCanvas:', rawCanvas.width, 'x', rawCanvas.height, '| badgeInfo:', JSON.stringify(badgeInfo), '| isHK:', isHK);
 
-    // 1) 무료배송 뱃지 → 육각형 clip
+    // ── 새로운 1000×1000 클린 캔버스에 복사 (html2canvas transform 잔류 제거) ──
+    const canvas = document.createElement('canvas');
+    canvas.width  = 1000;
+    canvas.height = 1000;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(rawCanvas, 0, 0, rawCanvas.width, rawCanvas.height, 0, 0, 1000, 1000);
+
+    // ── Post-processing ──────────────────────────────
+
+    // 1) 무료배송 뱃지 → 육각형 (destination-in compositing)
     if (badgeInfo) {
-      const { x, y, w, h, color } = badgeInfo;
+      const { x, y, w, h } = badgeInfo;
       const pts = [[0.5,0],[0.933,0.25],[0.933,0.75],[0.5,1],[0.067,0.75],[0.067,0.25]];
 
-      // 뱃지 내용(아이콘+텍스트 포함)을 임시 캔버스에 복사
-      const tmp = document.createElement('canvas');
-      tmp.width  = w;
-      tmp.height = h;
-      tmp.getContext('2d').drawImage(canvas, x, y, w, h, 0, 0, w, h);
+      // 별도 캔버스에서 뱃지 내용을 육각형으로 잘라냄
+      const bc = document.createElement('canvas');
+      bc.width  = w;
+      bc.height = h;
+      const bctx = bc.getContext('2d');
+      bctx.drawImage(canvas, x, y, w, h, 0, 0, w, h);           // 뱃지 내용 복사
+      bctx.globalCompositeOperation = 'destination-in';
+      bctx.beginPath();
+      bctx.moveTo(pts[0][0]*w, pts[0][1]*h);
+      for (let i = 1; i < pts.length; i++) bctx.lineTo(pts[i][0]*w, pts[i][1]*h);
+      bctx.closePath();
+      bctx.fill();                                                // 육각형 영역만 남김
+      bctx.globalCompositeOperation = 'source-over';
 
-      // 메인 캔버스에서 뱃지 영역을 배경색으로 덮음 (사각형 제거)
+      // 메인 캔버스: 뱃지 자리를 배경색으로 지우고 육각형 뱃지 그려 넣기
       ctx.fillStyle = bgColor;
       ctx.fillRect(x, y, w, h);
-
-      // 육각형 영역만 clip 후 뱃지 내용 복원
-      ctx.save();
-      ctx.beginPath();
-      ctx.moveTo(x + pts[0][0]*w, y + pts[0][1]*h);
-      for (let i = 1; i < pts.length; i++) ctx.lineTo(x + pts[i][0]*w, y + pts[i][1]*h);
-      ctx.closePath();
-      ctx.clip();
-      ctx.drawImage(tmp, x, y);
-      ctx.restore();
+      ctx.drawImage(bc, x, y);
     }
 
-    // 2) HK 그라데이션 테두리 → Canvas에 직접 그림
+    // 2) HK 그라데이션 테두리 → 클린 캔버스에 직접
     if (isHK) {
       const grad = ctx.createLinearGradient(0, 0, 1000, 1000);
       grad.addColorStop(0, '#FF5001');
