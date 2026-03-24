@@ -719,15 +719,15 @@ body {
 /* 제품 이미지 영역 */
 .th-products {
   position: absolute;
-  left: 0;
-  top: 0;
-  right: 210px;
-  bottom: 260px;
+  left: -30px;
+  top: 80px;
+  bottom: 80px;
+  right: 0;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   gap: 20px;
-  padding: 70px 20px 20px 30px;
+  padding: 0;
 }
 
 .th-product-img {
