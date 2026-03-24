@@ -379,10 +379,21 @@ body {
 
 /* ── 홍콩(HK) 템플릿 ── */
 #thumbnail.template-hk {
-  border: 11px solid transparent;
-  background:
-    linear-gradient(#ffffff, #ffffff) padding-box,
-    linear-gradient(135deg, #FF5001, #C20116) border-box;
+  background: #ffffff;
+}
+
+.hk-border-svg {
+  display: none;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 50;
+  pointer-events: none;
+}
+
+#thumbnail.template-hk .hk-border-svg {
+  display: block;
 }
 
 #thumbnail.template-hk .th-badge-shipping {
@@ -390,7 +401,7 @@ body {
   left: 28px;
   width: 185px;
   height: 185px;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25' fill='%23ffc410'/%3E%3C/svg%3E") center/contain no-repeat;
+  background: transparent;
 }
 
 #thumbnail.template-hk .th-shipping-icon {
@@ -527,6 +538,11 @@ body {
   background-image: linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, rgba(103,152,130,0.7) 100%);
 }
 
+/* 노이즈 오버레이 — 캡처 중 숨김 */
+#thumbnail.template-hidif-tw.th-exporting::before {
+  display: none;
+}
+
 /* 노이즈 오버레이 */
 #thumbnail.template-hidif-tw::before {
   content: '';
@@ -617,20 +633,45 @@ body {
   background: #000000;
 }
 
-/* 免運 배지 — 좌상단 노란 육각형 (SVG background, html2canvas 호환) */
+/* 免運 배지 — 좌상단 노란 육각형 (인라인 SVG) */
 .th-badge-shipping {
   position: absolute;
   top: 44px;
   left: 44px;
   width: 156px;
   height: 156px;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25' fill='%23ffda2a'/%3E%3C/svg%3E") center/contain no-repeat;
+  background: transparent;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 4px;
   z-index: 20;
+}
+
+.hexagon-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hexagon-svg polygon {
+  fill: #ffda2a;
+}
+
+.th-shipping-icon,
+.th-badge-shipping span {
+  position: relative;
+  z-index: 1;
+}
+
+#thumbnail.template-hk .hexagon-svg polygon {
+  fill: #ffc410;
+}
+
+#thumbnail.template-hidif-tw .hexagon-svg {
+  display: none;
 }
 
 .th-shipping-icon {

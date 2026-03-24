@@ -108,8 +108,22 @@
 
           <div id="thumbnail">
 
+            <!-- HK 그라데이션 테두리 (인라인 SVG) -->
+            <svg class="hk-border-svg" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="hkGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#FF5001"/>
+                  <stop offset="100%" stop-color="#C20116"/>
+                </linearGradient>
+              </defs>
+              <rect x="5.5" y="5.5" width="989" height="989" fill="none" stroke="url(#hkGrad)" stroke-width="11"/>
+            </svg>
+
             <!-- 免運 배지 -->
             <div class="th-badge-shipping" id="thShipping" style="display:none">
+              <svg class="hexagon-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <polygon points="50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25"/>
+              </svg>
               <img src="assets/delivery-icon.png" alt="배송" class="th-shipping-icon">
               <span>免運</span>
             </div>
