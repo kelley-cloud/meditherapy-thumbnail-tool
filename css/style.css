@@ -379,21 +379,10 @@ body {
 
 /* ── 홍콩(HK) 템플릿 ── */
 #thumbnail.template-hk {
-  background: #ffffff;
-}
-
-.hk-border-svg {
-  display: none;
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 50;
-  pointer-events: none;
-}
-
-#thumbnail.template-hk .hk-border-svg {
-  display: block;
+  border: 11px solid transparent;
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(135deg, #FF5001, #C20116) border-box;
 }
 
 #thumbnail.template-hk .th-badge-shipping {
@@ -401,7 +390,7 @@ body {
   left: 28px;
   width: 185px;
   height: 185px;
-  background: transparent;
+  background: #ffc410;
 }
 
 #thumbnail.template-hk .th-shipping-icon {
@@ -633,45 +622,21 @@ body {
   background: #000000;
 }
 
-/* 免運 배지 — 좌상단 노란 육각형 (인라인 SVG) */
+/* 免運 배지 — 좌상단 노란 육각형 */
 .th-badge-shipping {
   position: absolute;
   top: 44px;
   left: 44px;
   width: 156px;
   height: 156px;
-  background: transparent;
+  background: #ffda2a;
+  clip-path: polygon(50% 0%, 93.3% 25%, 93.3% 75%, 50% 100%, 6.7% 75%, 6.7% 25%);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 4px;
   z-index: 20;
-}
-
-.hexagon-svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.hexagon-svg polygon {
-  fill: #ffda2a;
-}
-
-.th-shipping-icon,
-.th-badge-shipping span {
-  position: relative;
-  z-index: 1;
-}
-
-#thumbnail.template-hk .hexagon-svg polygon {
-  fill: #ffc410;
-}
-
-#thumbnail.template-hidif-tw .hexagon-svg {
-  display: none;
 }
 
 .th-shipping-icon {

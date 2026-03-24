@@ -360,9 +360,12 @@ async function exportImage(format) {
     const prevTransform = scaler.style.transform;
     scaler.style.transform = 'scale(1)';
 
-    // 히디프 배경색 강제 지정 (html2canvas CSS 우선순위 버그 우회)
+    // 히디프: 배경색 강제 지정 + 노이즈 레이어 숨김 (html2canvas mix-blend-mode 미지원 우회)
     const isHidif = thumbnail.classList.contains('template-hidif-tw');
-    if (isHidif) thumbnail.style.backgroundColor = '#ffffff';
+    if (isHidif) {
+      thumbnail.style.backgroundColor = '#ffffff';
+      thumbnail.classList.add('th-exporting');
+    }
 
     await new Promise(r => requestAnimationFrame(r));
 
@@ -377,7 +380,10 @@ async function exportImage(format) {
     });
 
     scaler.style.transform = prevTransform;
-    if (isHidif) thumbnail.style.backgroundColor = '';
+    if (isHidif) {
+      thumbnail.style.backgroundColor = '';
+      thumbnail.classList.remove('th-exporting');
+    }
 
     const countryLabel = { tw: '대만', hk: '홍콩', sg: '싱가포르' };
     const productLabel = state.products.length > 0 ? state.products[0].name : '썸네일';
