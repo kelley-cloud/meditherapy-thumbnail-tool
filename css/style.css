@@ -1,0 +1,824 @@
+/* ═══════════════════════════════════════════
+   Reset & Base
+═══════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+  background: #C8C8C8;
+  color: #1A1A1A;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ═══════════════════════════════════════════
+   App Layout
+═══════════════════════════════════════════ */
+.app-header {
+  background: white;
+  border-bottom: 1px solid #E5E5E5;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.app-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.app-logo h1 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1A1A1A;
+  letter-spacing: -0.3px;
+}
+
+.app-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ═══════════════════════════════════════════
+   Control Panel
+═══════════════════════════════════════════ */
+.control-panel {
+  width: 350px;
+  flex-shrink: 0;
+  background: white;
+  border-right: 1px solid #E5E5E5;
+  padding: 20px 20px 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.control-group {
+  padding: 16px 0;
+  border-bottom: 1px solid #F0F0F0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.control-group:last-of-type {
+  border-bottom: none;
+}
+
+.control-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #1A1A1A;
+  letter-spacing: 0.2px;
+}
+
+/* ═══════════════════════════════════════════
+   Toggle Buttons
+═══════════════════════════════════════════ */
+.btn-group {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.toggle-btn {
+  padding: 7px 14px;
+  border: 1.5px solid #D0D0D0;
+  border-radius: 6px;
+  background: white;
+  color: #555;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.12s;
+  line-height: 1;
+}
+
+.toggle-btn:hover {
+  border-color: #888;
+  color: #1A1A1A;
+}
+
+.toggle-btn.active {
+  background: #1A1A1A;
+  border-color: #1A1A1A;
+  color: white;
+}
+
+/* ═══════════════════════════════════════════
+   Search Input
+═══════════════════════════════════════════ */
+.search-wrap {
+  position: relative;
+}
+
+.search-wrap input {
+  width: 100%;
+  padding: 9px 36px 9px 12px;
+  border: 1.5px solid #D0D0D0;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: inherit;
+  color: #1A1A1A;
+  outline: none;
+  transition: border-color 0.12s;
+}
+
+.search-wrap input:focus {
+  border-color: #1A1A1A;
+}
+
+.search-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.search-dropdown {
+  position: absolute;
+  top: calc(100% - 1px);
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1.5px solid #1A1A1A;
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  max-height: 180px;
+  overflow-y: auto;
+  z-index: 100;
+  display: none;
+}
+
+.search-dropdown.open {
+  display: block;
+}
+
+.dropdown-item {
+  padding: 9px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-bottom: 1px solid #F5F5F5;
+  transition: background 0.1s;
+}
+
+.dropdown-item:last-child { border-bottom: none; }
+
+.dropdown-item:hover { background: #F5F5F5; }
+
+.dropdown-tag {
+  font-size: 10px;
+  background: #f0f0f0;
+  color: #666;
+  padding: 1px 6px;
+  border-radius: 3px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.dropdown-vol {
+  font-size: 11px;
+  color: #999;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.dropdown-empty {
+  padding: 10px 12px;
+  font-size: 13px;
+  color: #999;
+}
+
+/* ═══════════════════════════════════════════
+   Selected Chip
+═══════════════════════════════════════════ */
+.selected-chips {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.selected-chip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 10px 7px 12px;
+  background: #F5F5F5;
+  border-radius: 6px;
+  gap: 8px;
+}
+
+.selected-chip span {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1A1A1A;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chip-clear {
+  background: none;
+  border: none;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  color: #999;
+  padding: 0 2px;
+  flex-shrink: 0;
+}
+
+.chip-clear:hover { color: #1A1A1A; }
+
+/* ═══════════════════════════════════════════
+   Inputs
+═══════════════════════════════════════════ */
+.input-suffix-wrap {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid #D0D0D0;
+  border-radius: 6px;
+  overflow: hidden;
+  transition: border-color 0.12s;
+}
+
+.input-suffix-wrap:focus-within {
+  border-color: #1A1A1A;
+}
+
+.input-suffix-wrap input {
+  flex: 1;
+  padding: 9px 12px;
+  border: none;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  background: white;
+}
+
+.input-suffix {
+  padding: 9px 14px;
+  background: #F5F5F5;
+  font-size: 13px;
+  color: #555;
+  border-left: 1.5px solid #D0D0D0;
+  font-weight: 500;
+}
+
+.text-input {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1.5px solid #D0D0D0;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.12s;
+}
+
+.text-input:focus { border-color: #1A1A1A; }
+
+/* ═══════════════════════════════════════════
+   Export Buttons
+═══════════════════════════════════════════ */
+.export-buttons {
+  display: flex;
+  gap: 8px;
+  padding-top: 20px;
+  margin-top: auto;
+}
+
+.btn-export {
+  flex: 1;
+  padding: 13px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: opacity 0.12s;
+  letter-spacing: 0.3px;
+}
+
+.btn-export:hover { opacity: 0.82; }
+
+.btn-jpg { background: #76a2db; color: white; }
+.btn-png { background: #484848; color: white; }
+
+.btn-dl-icon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  vertical-align: middle;
+  margin-bottom: 2px;
+}
+
+.btn-export:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ═══════════════════════════════════════════
+   Preview Area
+═══════════════════════════════════════════ */
+.preview-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.preview-label {
+  font-size: 15px;
+  color: #777;
+  margin-bottom: 0;
+  letter-spacing: 0.2px;
+}
+
+.preview-container {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.thumbnail-scaler {
+  transform-origin: center center;
+  display: block;
+  line-height: 0;
+}
+
+/* ═══════════════════════════════════════════
+   THUMBNAIL  (1000 × 1000)
+═══════════════════════════════════════════ */
+#thumbnail {
+  width: 1000px;
+  height: 1000px;
+  background: #f5f5f5;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── 홍콩(HK) 템플릿 ── */
+#thumbnail.template-hk {
+  border: 11px solid transparent;
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(135deg, #FF5001, #C20116) border-box;
+}
+
+#thumbnail.template-hk .th-badge-shipping {
+  top: 40px;
+  left: 28px;
+  width: 185px;
+  height: 185px;
+  background: #ffc410;
+}
+
+#thumbnail.template-hk .th-shipping-icon {
+  width: 92px;
+  height: 60px;
+}
+
+#thumbnail.template-hk .th-badge-shipping span {
+  font-size: 36px;
+  margin-bottom: 3px;
+}
+
+/* HK 할인율 배지 */
+#thumbnail.template-hk .th-badge-discount {
+  top: 51px;
+  right: 38px;
+  width: 182px;
+  height: 182px;
+  background: #ffffff;
+  border: 6px solid #C10D18;
+}
+
+#thumbnail.template-hk .th-badge-discount span {
+  color: #C10D18;
+  font-size: 58px;
+}
+
+#thumbnail.template-hk .th-badge-discount .tw-discount-num {
+  font-size: 60px;
+  color: #C10D18;
+}
+
+#thumbnail.template-hk .th-badge-discount .tw-discount-unit {
+  font-size: 52px;
+  color: #C10D18;
+}
+
+#thumbnail.template-hk .th-badge-bundle span {
+  font-size: 60px;
+  font-weight: 700;
+}
+
+/* HK 구성 배지: 할인율 하단(51+182=233) + 20px = 253px */
+#thumbnail.template-hk .th-badge-bundle {
+  top: 253px;
+  right: 38px;
+  width: 182px;
+  height: 182px;
+  background: #ffffff;
+  border-width: 6px;
+}
+
+/* HK 사은품: 테두리 11px 오프셋 보정 (TW와 동일 시각 위치) */
+#thumbnail.template-hk .th-gift-wrap {
+  right: 29px;
+  bottom: 29px;
+  background: #ffffff;
+}
+
+#thumbnail.template-hk .th-gift-plus {
+  left: 669px;
+  bottom: 209px;
+}
+
+/* ── 싱가포르(SG) 템플릿 ── */
+#thumbnail.template-sg .th-shipping-icon {
+  width: 60px;
+  height: 60px;
+  margin-top: -4px;
+}
+
+/* SG 할인율 배지 */
+#thumbnail.template-sg .th-badge-discount span {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+#thumbnail.template-sg .sg-discount-num {
+  font-size: 68px;
+  font-weight: 700;
+  color: white;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+#thumbnail.template-sg .th-badge-discount .sg-discount-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 2px;
+}
+
+#thumbnail.template-sg .sg-discount-pct {
+  font-size: 40px;
+  font-weight: 700;
+  color: white;
+  line-height: 1;
+}
+
+#thumbnail.template-sg .sg-discount-off {
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+  letter-spacing: 1px;
+  line-height: 1.2;
+}
+
+/* SG 무료배송 배지 */
+#thumbnail.template-sg .th-badge-shipping span {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  letter-spacing: -1px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
+  margin-top: -5px;
+}
+
+#thumbnail.template-sg .sg-free {
+  font-size: 28px;
+}
+
+#thumbnail.template-sg .sg-shipping {
+  font-size: 16px;
+}
+
+/* ── 히디프 대만(Hidif TW) 템플릿 ── */
+#thumbnail.template-hidif-tw {
+  background: linear-gradient(to bottom, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.7) 50%, rgba(103,152,130,0.7) 100%), #ffffff;
+}
+
+/* 노이즈 오버레이 */
+#thumbnail.template-hidif-tw::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n' x='0' y='0'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 300px 300px;
+  opacity: 0.7;
+  mix-blend-mode: overlay;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* 히디프 무료배송: 이미지만 표시 (육각형 제거) */
+#thumbnail.template-hidif-tw .th-badge-shipping {
+  top: 38px;
+  left: 38px;
+  background: none;
+  clip-path: none;
+  width: auto;
+  height: auto;
+  padding: 0;
+  gap: 0;
+}
+
+#thumbnail.template-hidif-tw .th-badge-shipping span {
+  display: none;
+}
+
+#thumbnail.template-hidif-tw .th-shipping-icon {
+  width: 166px;
+  height: 94px;
+  object-fit: contain;
+}
+
+/* 히디프 할인율 배지 */
+#thumbnail.template-hidif-tw .th-badge-discount {
+  top: 25px;
+  right: 25px;
+  width: 205px;
+  height: 205px;
+  background: linear-gradient(-15deg, #4a6156, #6c9782);
+  border: none;
+}
+
+/* 할인율 배지 내부 테두리 원 (190px, 흰색 선만) */
+#thumbnail.template-hidif-tw .th-badge-discount::before {
+  content: '';
+  position: absolute;
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.65);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+#thumbnail.template-hidif-tw .th-badge-discount span {
+  font-size: 70px;
+  font-weight: 700;
+  font-family: 'Noto Serif TC', 'Source Han Serif TC', serif;
+  color: white;
+  letter-spacing: -1px;
+  position: relative;
+  z-index: 1;
+}
+
+/* 히디프 구성 배지: 비활성화 시각 처리 */
+#bundleGroup .toggle-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* 히디프 사은품 박스 */
+#thumbnail.template-hidif-tw .th-gift-wrap {
+  outline-color: #000000;
+  background: transparent;
+}
+
+#thumbnail.template-hidif-tw .th-gift-label {
+  background: #000000;
+}
+
+#thumbnail.template-hidif-tw .th-gift-plus-circle {
+  background: #000000;
+}
+
+/* 免運 배지 — 좌상단 노란 육각형 (상단 꼭짓점, 정육각형 비율) */
+.th-badge-shipping {
+  position: absolute;
+  top: 44px;
+  left: 44px;
+  width: 156px;
+  height: 156px;
+  background: #ffda2a;
+  /* 정육각형: 상단/하단에 꼭짓점, 좌우 여백 6.7%로 찌그러짐 방지 */
+  clip-path: polygon(50% 0%, 93.3% 25%, 93.3% 75%, 50% 100%, 6.7% 75%, 6.7% 25%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  z-index: 20;
+}
+
+.th-shipping-icon {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+
+.th-badge-shipping span {
+  font-size: 28px;
+  font-weight: 800;
+  color: #1A1A1A;
+  letter-spacing: 2px;
+  line-height: 1;
+}
+
+/* 折 배지 — 우상단 검정 원 */
+.th-badge-discount {
+  position: absolute;
+  top: 44px;
+  right: 44px;
+  width: 168px;
+  height: 168px;
+  background: #1A1A1A;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+
+.th-badge-discount span {
+  font-size: 50px;
+  font-weight: 800;
+  color: white;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+/* TW/HK 숫자·折 분리 */
+.th-badge-discount #thDiscountText {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.th-badge-discount .tw-discount-num {
+  font-size: 60px;
+  font-weight: 800;
+  color: white;
+  line-height: 1;
+}
+
+.th-badge-discount .tw-discount-unit {
+  font-size: 52px;
+  font-weight: 800;
+  color: white;
+  line-height: 1;
+}
+
+/* 구성 배지 — 우측 흰 원 (折 배지와 동일 사이즈) */
+.th-badge-bundle {
+  position: absolute;
+  top: 238px;
+  right: 44px;
+  width: 168px;
+  height: 168px;
+  background: #f5f5f5;
+  border: 5px solid #1A1A1A;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+
+.th-badge-bundle span {
+  font-size: 60px;
+  font-weight: 700;
+  color: #1A1A1A;
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+
+/* 제품 이미지 영역 */
+.th-products {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 210px;
+  bottom: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 70px 20px 20px 30px;
+}
+
+.th-product-img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  flex-shrink: 1;
+}
+
+.th-product-placeholder {
+  display: none;
+}
+
+/* 사은품 + 기호 — 라벨 박스 왼쪽 테두리 중앙 */
+.th-gift-plus {
+  position: absolute;
+  /* 박스 left edge(710px) 중앙 - 원 반지름(30px) = 680px from left */
+  left: 680px;
+  /* 박스 세로 중앙: bottom:40 + 380/2 - 원반지름(30) = 200px from bottom */
+  bottom: 220px;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+
+.th-gift-plus-circle {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background: #76a2db;
+  border-radius: 50%;
+}
+
+.th-gift-plus span {
+  position: relative;
+  z-index: 1;
+  font-size: 36px;
+  font-weight: 400;
+  color: #ffffff;
+  line-height: 1;
+}
+
+/* 사은품 박스 (250×380, 테두리 #76a2db) */
+.th-gift-wrap {
+  position: absolute;
+  right: 40px;
+  bottom: 40px;
+  width: 250px;
+  height: 380px;
+  border: none;
+  outline: 2px dashed #76a2db;
+  outline-offset: -2px;
+  border-radius: 10px;
+  overflow: hidden;
+  z-index: 10;
+  background: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+}
+
+.th-gift-imgs {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 24px 16px;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.th-gift-imgs img {
+  flex: 1;
+  min-width: 0;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* 사은품 텍스트 영역 — 박스 하단 고정 70px */
+.th-gift-label {
+  flex-shrink: 0;
+  height: 70px;
+  background: #76a2db;
+  color: white;
+  font-size: 24px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.5px;
+}
