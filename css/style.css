@@ -243,6 +243,26 @@ body {
 
 .chip-clear:hover { color: #1A1A1A; }
 
+.chip-drag {
+  font-size: 16px;
+  color: #C0C0C0;
+  cursor: grab;
+  flex-shrink: 0;
+  line-height: 1;
+  user-select: none;
+}
+
+.chip-drag:active { cursor: grabbing; }
+
+.selected-chip.dragging {
+  opacity: 0.4;
+}
+
+.selected-chip.drag-over {
+  border: 1.5px solid #1A1A1A;
+  background: #EBEBEB;
+}
+
 /* ═══════════════════════════════════════════
    Inputs
 ═══════════════════════════════════════════ */

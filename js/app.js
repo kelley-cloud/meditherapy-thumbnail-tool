@@ -1,7 +1,7 @@
 /**
  * 메디테라피 썸네일 생성기 — app.js v5
  */
-console.log('✅ app.js v6 로드됨');
+console.log('✅ app.js v7 로드됨');
 
 const SHEET_CSV_URL =
   'https://docs.google.com/spreadsheets/d/e/2PACX-1vRYjkiTVCUBF41ITs5lkCtZVsLdjzZgNamDX6hR2qmj8uAof8HnCuJAWzFmd34Z3eJ5Lmnmwwszgy4j/pub?output=csv';
@@ -275,13 +275,40 @@ function getProductCount() {
   return map[state.bundle] || 1;
 }
 
-function renderSelectedChips(containerId, items, removeCallback) {
+function renderSelectedChips(containerId, items, removeCallback, reorderCallback) {
   const container = document.getElementById(containerId);
   container.innerHTML = '';
+  let dragSrcIdx = null;
+
   items.forEach((item, idx) => {
     const chip = document.createElement('div');
     chip.className = 'selected-chip';
-    chip.innerHTML = `<span>${item.name}${item.volume ? ` (${item.volume})` : ''}</span><button class="chip-clear">×</button>`;
+    chip.draggable = true;
+    chip.innerHTML = `<span class="chip-drag">⠿</span><span>${item.name}${item.volume ? ` (${item.volume})` : ''}</span><button class="chip-clear">×</button>`;
+
+    chip.addEventListener('dragstart', e => {
+      dragSrcIdx = idx;
+      chip.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    chip.addEventListener('dragend', () => {
+      chip.classList.remove('dragging');
+      container.querySelectorAll('.selected-chip').forEach(c => c.classList.remove('drag-over'));
+    });
+    chip.addEventListener('dragover', e => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      container.querySelectorAll('.selected-chip').forEach(c => c.classList.remove('drag-over'));
+      if (dragSrcIdx !== idx) chip.classList.add('drag-over');
+    });
+    chip.addEventListener('drop', e => {
+      e.preventDefault();
+      if (dragSrcIdx !== null && dragSrcIdx !== idx && reorderCallback) {
+        reorderCallback(dragSrcIdx, idx);
+        dragSrcIdx = null;
+      }
+    });
+
     chip.querySelector('.chip-clear').addEventListener('click', () => {
       removeCallback(idx);
     });
@@ -518,19 +545,35 @@ async function init() {
   });
 
   function refreshProductChips() {
-    renderSelectedChips('selectedProducts', state.products, idx => {
-      state.products.splice(idx, 1);
-      refreshProductChips();
-      updateThumbnail();
-    });
+    renderSelectedChips('selectedProducts', state.products,
+      idx => {
+        state.products.splice(idx, 1);
+        refreshProductChips();
+        updateThumbnail();
+      },
+      (from, to) => {
+        const [moved] = state.products.splice(from, 1);
+        state.products.splice(to, 0, moved);
+        refreshProductChips();
+        updateThumbnail();
+      }
+    );
   }
 
   function refreshGiftChips() {
-    renderSelectedChips('selectedGifts', state.gifts, idx => {
-      state.gifts.splice(idx, 1);
-      refreshGiftChips();
-      updateThumbnail();
-    });
+    renderSelectedChips('selectedGifts', state.gifts,
+      idx => {
+        state.gifts.splice(idx, 1);
+        refreshGiftChips();
+        updateThumbnail();
+      },
+      (from, to) => {
+        const [moved] = state.gifts.splice(from, 1);
+        state.gifts.splice(to, 0, moved);
+        refreshGiftChips();
+        updateThumbnail();
+      }
+    );
   }
 
   // 제품 검색 (중복 선택)
